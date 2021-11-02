@@ -24,6 +24,10 @@ export class RestService {
     return this.http.get(this.endpoint + 'stocks?lookingItems=' + items)
   }
 
+  getAverage(items: string): Observable<any> {
+    return this.http.get(this.endpoint + 'average?lookingItems=' + items)
+  }
+
   private extractData(res: any): any {
     const body = res;
     return body || { };

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.math.*;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.util.*;
 
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
@@ -73,5 +73,19 @@ public class AutoMobilityController{
 		}finally{
 			return stocks;
 		}
+	}
+
+	@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4200/stock"})
+	@GetMapping("/average")
+	public Double getAverage(@RequestParam(value = "lookingItems", defaultValue = "") String lookingItems){
+		HashMap<String, Stock> items = getStocks(lookingItems);
+		Double av = new Double(0);
+
+		for(Map.Entry<String, Stock> item : items.entrySet()){
+			av = Double.sum(av, item.getValue().getQuote().getPrice().doubleValue());
+		}
+		av = new Double(av.doubleValue() / items.size());
+		
+		return av;
 	}
 }

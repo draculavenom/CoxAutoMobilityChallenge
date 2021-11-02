@@ -55,11 +55,16 @@ export class StockComponent implements OnInit {
 
   public getAverage(): void{
     this.average = 0;
-    var i;
-    for(i = 0; i<this.stocks.length ; i++){
-      this.average += this.stocks[i].price;
+    var items = "";
+    for(var i = 0; i<this.stocks.length ; i++){
+      items += ","+this.stocks[i].symbol;
     }
-    this.average = this.average / i;
+    items = items.substring(1);
+    this.rest.getAverage(items).subscribe((data) => {
+      if(data != null){
+        this.average = data;
+      }
+    });
   }
 
   public changeItemName(event: string){
